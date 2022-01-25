@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "32288258755",
+    "firebase_url": "https://aug-brew-crew.firebaseio.com",
+    "project_id": "aug-brew-crew",
+    "storage_bucket": "aug-brew-crew.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32288258755:android:f113875e7aaf32535d4076",
+        "android_client_info": {
+          "package_name": "com.aug.brew_crew_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRRtOgqBtxPVAz5zpIvSJgjJEYmkmkS6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32288258755:android:fe41b06642f20c5c5d4076",
+        "android_client_info": {
+          "package_name": "com.austy.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRRtOgqBtxPVAz5zpIvSJgjJEYmkmkS6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32288258755:android:5b2b5639782868b95d4076",
+        "android_client_info": {
+          "package_name": "com.e_now.e_now_music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32288258755-hiekdmufvlf3jp0dj5k9eo4s79243274.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e_now.e_now_music",
+            "certificate_hash": "56f79c4223374fc98e13a553c8ea3d8db383dc62"
+          }
+        },
+        {
+          "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRRtOgqBtxPVAz5zpIvSJgjJEYmkmkS6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
