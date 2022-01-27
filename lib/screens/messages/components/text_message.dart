@@ -1,16 +1,18 @@
 import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
 class TextMessage extends StatelessWidget {
-  const TextMessage({
+   TextMessage({
     Key? key,
     this.message,
   }) : super(key: key);
 
   final ChatMessage? message;
+  final currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,13 @@ class TextMessage extends StatelessWidget {
         vertical: kDefaultPadding / 2,
       ),
       decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(message!.isSender ? 1 : 0.1),
+        color: kPrimaryColor.withOpacity(message!.fromID == currentUser!.uid ? 1 : 0.1),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
         message!.lastMessage!,
         style: TextStyle(
-          color: message!.isSender
+          color: message!.fromID == currentUser!.uid
               ? Colors.white
               : Theme.of(context).textTheme.bodyText1!.color,
         ),

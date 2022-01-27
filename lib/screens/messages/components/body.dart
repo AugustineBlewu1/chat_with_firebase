@@ -1,6 +1,5 @@
 import 'package:chat/constants.dart';
 import 'package:chat/constants/firebase_constants.dart';
-import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:chat/nav/navigators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,13 +27,16 @@ class _BodyState extends State<Body> {
   void initState() {
     chats
         .where(FirestoreConstants.pathUserCollection,
-            isEqualTo: {widget.friendName: null, currentUserId: null})
+            isEqualTo: {widget.friendUid: null, currentUserId: null})
         .limit(1)
         .get()
         .then((QuerySnapshot querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
-            chatdocumentId = querySnapshot.docs.single.id;
+            setState(() {
+               chatdocumentId = querySnapshot.docs.single.id;
             logger.v(chatdocumentId);
+            });
+           
           } else {
             chats.add({
               FirestoreConstants.pathUserCollection: {
@@ -59,7 +61,7 @@ class _BodyState extends State<Body> {
         StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection(FirestoreConstants.pathMessageCollection)
-                .doc(FirestoreConstants.pathMessageId)
+                .doc(chatdocumentId)
                 .collection(FirestoreConstants.pathChatCollection)
                 .orderBy('createdOn', descending: false)
                 .snapshots(),
@@ -95,8 +97,10 @@ class _BodyState extends State<Body> {
                                   createdOn: data['createdOn'].toString(),
                                   isActive: data['isActive'],
                                   type: chatMessage(data['type']),
-                                  isSender: data['isSender'] ?? false,
-                                  lastMessage: data['lastMessage']));
+                                  fromID: data['fromID'],
+                                  lastMessage: data['lastMessage'],
+                                  asset: data['asset'],
+                                  ));
                         }),
                   ),
                 );
@@ -104,7 +108,7 @@ class _BodyState extends State<Body> {
 
               return SizedBox();
             }),
-        ChatInputField(chats: chats),
+        ChatInputField(chats: chats, chatDocID: chatdocumentId),
       ],
     );
   }

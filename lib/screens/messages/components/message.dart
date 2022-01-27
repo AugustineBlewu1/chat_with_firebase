@@ -1,5 +1,7 @@
 import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
+import 'package:chat/screens/messages/components/image_message.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -8,13 +10,13 @@ import 'text_message.dart';
 import 'video_message.dart';
 
 class Message extends StatelessWidget {
-  const Message({
+   Message({
     Key? key,
     required this.message,
   }) : super(key: key);
 
   final ChatMessage message;
-
+  final currentUser = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     Widget messageContaint(ChatMessage message) {
@@ -23,6 +25,8 @@ class Message extends StatelessWidget {
           return TextMessage(message: message);
         case ChatMessageType.audio:
           return AudioMessage(message: message);
+        case ChatMessageType.image:
+          return ImageMessage(message: message, isMe:  message.fromID == currentUser!.uid ? true : false,);
         case ChatMessageType.video:
           return VideoMessage();
         default:
@@ -34,9 +38,9 @@ class Message extends StatelessWidget {
       padding: const EdgeInsets.only(top: kDefaultPadding),
       child: Row(
         mainAxisAlignment:
-            message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            message.fromID == currentUser!.uid ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!message.isSender) ...[
+          if (message.fromID == currentUser!.uid) ...[
             CircleAvatar(
               radius: 12,
               backgroundImage: AssetImage("assets/images/user_2.png"),

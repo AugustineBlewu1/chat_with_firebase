@@ -1,6 +1,8 @@
 import 'package:chat/constants/app_constants.dart';
 import 'package:chat/providers/auth_provider.dart';
+import 'package:chat/providers/storage_provider.dart';
 import 'package:chat/screens/welcome/welcome_screen.dart';
+import 'package:chat/services/file_upload.dart';
 import 'package:chat/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +37,10 @@ class MyApp extends StatelessWidget {
                 firebaseAuth: FirebaseAuth.instance,
                 googleSignIn: GoogleSignIn(),
                 prefs: this.prefs,
-                firebaseFirestore: this.firebaseFirestore))
+                firebaseFirestore: this.firebaseFirestore)),
+
+      ChangeNotifierProvider<ChatModel>(create: (_) => ChatModel()),
+      ChangeNotifierProvider<StorageService>(create: (_) => StorageService()),
       ],
       child: MaterialApp(
         title: AppConstants.appTitle,

@@ -1,14 +1,15 @@
-import 'dart:io';
 
 import 'package:chat/constants.dart';
+import 'package:chat/constants/firebase_constants.dart';
 import 'package:chat/nav/navigators.dart';
-import 'package:chat/screens/messages/components/chat_input_field.dart';
 import 'package:chat/services/file_upload.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-bottomSheet(context, {ImagePicker? picker}) {
+bottomSheet(context,
+    {ImagePicker? picker, final CollectionReference<Object?>? chats, chatID}) {
   final getData = Provider.of<ChatModel>(context, listen: false);
   return Container(
     height: 120.0,
@@ -29,8 +30,17 @@ bottomSheet(context, {ImagePicker? picker}) {
                     Icons.camera_alt_rounded,
                     color: kPrimaryColor,
                   ),
-                  onPressed: () {
-                   getData.getImageCamera(picker!, context);
+                  onPressed: () async {
+                    getData.getImageCamera(picker!, context).then((res) {
+                      chats!
+                          .doc(chatID)
+                          .collection(FirestoreConstants.pathChatCollection)
+                          .add(res!)
+                          .then((value) {
+                        logger.v(value);
+                        logger.v("Sent Succesfully");
+                      });
+                    });
                     Navigator.pop(context);
                   }),
               Text(
@@ -47,7 +57,7 @@ bottomSheet(context, {ImagePicker? picker}) {
                     color: kPrimaryColor,
                   ),
                   onPressed: () {
-                   getData.getImages(picker!, context);
+                    getData.getImages(picker!, context);
                     Navigator.pop(context);
                   }),
               Text(

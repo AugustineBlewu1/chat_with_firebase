@@ -16,7 +16,6 @@ class Chat {
   ChatMessageType? type;
   MessageStatusDot? messageStatus;
   bool? isActive;
-  bool? isSender;
   Chat(
       {this.name,
       this.lastMessage,
@@ -27,7 +26,6 @@ class Chat {
       this.createdOn,
       this.type,
       this.isActive,
-      this.isSender,
       this.messageStatus});
 
 
@@ -43,7 +41,6 @@ class Chat {
       'createdOn': createdOn,
       'isActive': isActive ?? false,
       'type': type!.index,
-      'isSender': isSender,
       'messageStatus': messageStatus
     };
   }
@@ -59,7 +56,6 @@ class Chat {
         createdOn: map['createdOn'],
         isActive: map['isActive'],
         type: map['type'],
-        isSender: map['isSender'],
         messageStatus: map['messageStatus']
         );
   }

@@ -15,9 +15,11 @@ class ChatInputField extends StatefulWidget {
   const ChatInputField({
     Key? key,
     this.chats,
+    this.chatDocID,
   }) : super(key: key);
 
   final CollectionReference<Object?>? chats;
+  final String? chatDocID;
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -100,7 +102,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         onPressed: () {
                           showModalBottomSheet(
                               builder: (context) =>
-                                  bottomSheet(context, picker: _picker),
+                                  bottomSheet(context, picker: _picker, chats : widget.chats, chatID: widget.chatDocID),
                               context: context);
                         },
                         icon: Icon(Icons.attach_file),
@@ -125,6 +127,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                           sendMessage(
                             textEditingController.text,
                             type: ChatMessageType.text,
+                            chatID : widget.chatDocID
                           );
                         },
                         color: Theme.of(context)
@@ -177,8 +180,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
   }
 
   void sendMessage(String message,
-      {ChatMessageType type = ChatMessageType.text, String? localAsset}) {
-    if (message == 'null') {
+      {ChatMessageType type = ChatMessageType.text, String? chatID, String? localAsset}) {
+    if (message == '') {
       //  nav.to(PageRouter.login);
       return;
     } else {
@@ -188,13 +191,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
         to: 'KEK',
         createdOn: FieldValue.serverTimestamp(),
         type: ChatMessageType.text,
-        isSender: true,
         name: currentUser.displayName ?? 'Client',
       );
       logger.v(chat.toMap());
-
+      logger.v(chatID);
+      logger.v(chatID);
       widget.chats!
-          .doc(FirestoreConstants.pathMessageId)
+          .doc(chatID)
           .collection(FirestoreConstants.pathChatCollection)
           .add(chat.toMap())
           .then((value) {

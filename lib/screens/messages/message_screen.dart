@@ -1,22 +1,18 @@
 import 'package:chat/constants.dart';
-import 'package:chat/nav/navigators.dart';
 import 'package:flutter/material.dart';
 
 import 'components/body.dart';
 
 class MessagesScreen extends StatelessWidget {
-  const MessagesScreen({Key? key, this.data}) : super(key: key);
+  const MessagesScreen({Key? key, this.data})
+      : super(key: key);
 
   final Map<String, dynamic>? data;
   @override
   Widget build(BuildContext context) {
-    logger.v(data);
     return Scaffold(
       appBar: buildAppBar(),
-      body: Body(
-        friendName: data!['nickname'],
-        friendUid: data!['id'],
-      ),
+      body: Body(friendName: data!['nickname'], friendUid: data!['id'],),
     );
   }
 

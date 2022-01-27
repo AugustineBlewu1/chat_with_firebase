@@ -26,33 +26,32 @@ class ChatModel extends ChangeNotifier {
   init() async {
     prefs = await SharedPreferences.getInstance();
     firebaseUser = prefs.getString(FirestoreConstants.id);
-    userChart = firebaseStorage.ref().child('chats').child(firebaseUser!);
+    userChart = firebaseStorage.ref().child(FirestoreConstants.pathUserCollection).child(firebaseUser!);
     logger.v(userChart);
   }
 
-  Future getImageCamera(ImagePicker _picker, context) async {
+  Future<Map<String, dynamic>?> getImageCamera(
+      ImagePicker _picker, context) async {
     final storage = Provider.of<StorageService>(context, listen: false);
 
     XFile? image = await _picker.pickImage(source: ImageSource.camera);
     if (image == null) {
       print("error in camera");
-      return;
+      return null;
     } else {
       File selectedFile = File(image.path);
 
       var url = await storage.upLoadFile(
           firebaseUser!, "ChatFiles", File(image.path));
 
-      if (url != null) {
-        sendFileMessage(url, ChatMessageType.image, image.path);
-      }
       var filename = selectedFile.path.split('/').last;
       logger.v(filename);
-      //updateProfile(filename: filename, selectedFile: compressedFile);
+      if (url != null) {
+        return sendFileMessage(url, ChatMessageType.image, image.path);
+      } else {
+        return null;
+      }
     }
-
-    // Utility().saveImageToPreferences(
-    //     Utility().base64String(_selectedFile.readAsBytesSync()));
   }
 
   Future getImages(ImagePicker _picker, context) async {
@@ -64,12 +63,13 @@ class ChatModel extends ChangeNotifier {
     logger.w(images);
   }
 
-  void sendFileMessage(String message, ChatMessageType type, String local) {
+  Map<String, dynamic> sendFileMessage(
+      String message, ChatMessageType type, String local) {
     return sendMessage(message, type: type, localAsset: local);
   }
 
-  void sendMessage(String message,
-      {ChatMessageType type = ChatMessageType.text, String? localAsset}) {
+  Map<String, dynamic> sendMessage(String message,
+      {ChatMessageType type = ChatMessageType.image, String? localAsset}) {
     if (firebaseUser == null) {
       //  nav.to(PageRouter.login);
       logger.v(firebaseUser);
@@ -83,6 +83,10 @@ class ChatModel extends ChangeNotifier {
       name: firebaseUser ?? 'Client',
       asset: localAsset!,
     );
-      //this.userChart.p
+
+    logger.v(chat.toMap());
+
+    return chat.toMap();
+    //this.userChart.p
   }
 }
