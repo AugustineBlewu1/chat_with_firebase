@@ -1,3 +1,4 @@
+import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class TextMessage extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
-        message!.text,
+        message!.lastMessage!,
         style: TextStyle(
           color: message!.isSender
               ? Colors.white

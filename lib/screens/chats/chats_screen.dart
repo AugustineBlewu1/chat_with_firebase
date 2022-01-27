@@ -1,5 +1,10 @@
 import 'package:chat/constants.dart';
+import 'package:chat/providers/auth_provider.dart';
+import 'package:chat/screens/signinOrSignUp/signin_or_signup_screen.dart';
+import 'package:chat/services/file_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../nav/navigators.dart';
 
 import 'components/body.dart';
 
@@ -52,6 +57,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
   }
 
   AppBar buildAppBar() {
+    final getData = Provider.of<AuthProvider>(context, listen: false);
+
     return AppBar(
       automaticallyImplyLeading: false,
       title: Text("Chats"),
@@ -59,6 +66,14 @@ class _ChatsScreenState extends State<ChatsScreen> {
         IconButton(
           icon: Icon(Icons.search),
           onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () {
+            getData.handleSignOut().then((value) {
+              context.pushReplacement(screen: SigninOrSignupScreen());
+            });
+          },
         ),
       ],
     );

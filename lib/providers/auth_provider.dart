@@ -1,5 +1,6 @@
 import 'package:chat/allModels/user_chat.dart';
 import 'package:chat/constants/firebase_constants.dart';
+import 'package:chat/nav/navigators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     GoogleSignInAccount? googleuser = await googleSignIn!.signIn();
-
+    logger.v(googleuser);
     if (googleuser != null) {
       GoogleSignInAuthentication? googleAuth = await googleuser.authentication;
 
@@ -92,8 +93,10 @@ class AuthProvider extends ChangeNotifier {
           UserChat userChat = UserChat.fromDocument(documentSnapshot);
 
           await prefs.setString(FirestoreConstants.id, userChat.id!);
-          await prefs.setString(FirestoreConstants.nickname, userChat.nickname!);
-          await prefs.setString(FirestoreConstants.photoUrl, userChat.photoUrl!);
+          await prefs.setString(
+              FirestoreConstants.nickname, userChat.nickname!);
+          await prefs.setString(
+              FirestoreConstants.photoUrl, userChat.photoUrl!);
           await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe!);
           await prefs.setString(
               FirestoreConstants.phoneNumber, userChat.phoneNumber!);

@@ -1,14 +1,22 @@
 import 'package:chat/constants.dart';
+import 'package:chat/nav/navigators.dart';
 import 'package:flutter/material.dart';
 
 import 'components/body.dart';
 
 class MessagesScreen extends StatelessWidget {
+  const MessagesScreen({Key? key, this.data}) : super(key: key);
+
+  final Map<String, dynamic>? data;
   @override
   Widget build(BuildContext context) {
+    logger.v(data);
     return Scaffold(
       appBar: buildAppBar(),
-      body: Body(),
+      body: Body(
+        friendName: data!['nickname'],
+        friendUid: data!['id'],
+      ),
     );
   }
 
@@ -19,21 +27,23 @@ class MessagesScreen extends StatelessWidget {
         children: [
           BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            backgroundImage: NetworkImage(data!['photoUrl'].toString()),
           ),
           SizedBox(width: kDefaultPadding * 0.75),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Kristin Watson",
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                "Active 3m ago",
-                style: TextStyle(fontSize: 12),
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data!['nickname'].toString(),
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  "Active 3m ago",
+                  style: TextStyle(fontSize: 12),
+                )
+              ],
+            ),
           )
         ],
       ),

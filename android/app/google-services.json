@@ -44,6 +44,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "32288258755-28cojtk008vvq6vj03ntusldfavulbqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.austy.chat",
+            "certificate_hash": "56f79c4223374fc98e13a553c8ea3d8db383dc62"
+          }
+        },
+        {
           "client_id": "32288258755-7cq4bbvpcoitgdf7dg396r2iqfpdqtqi.apps.googleusercontent.com",
           "client_type": 3
         }

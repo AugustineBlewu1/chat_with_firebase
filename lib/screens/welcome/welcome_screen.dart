@@ -1,8 +1,37 @@
 import 'package:chat/constants.dart';
+import 'package:chat/providers/auth_provider.dart';
+import 'package:chat/screens/chats/chats_screen.dart';
 import 'package:chat/screens/signinOrSignUp/signin_or_signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import '../../nav/navigators.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 3), () {
+      checkedSignedIn();
+    });
+    super.initState();
+  }
+
+  void checkedSignedIn() async {
+    AuthProvider authProvider = context.read<AuthProvider>();
+
+    bool isLoggedIn = await authProvider.isLoggedIn();
+
+    if (isLoggedIn) {
+      context.pushReplacement(screen: ChatsScreen());
+      return;
+    }
+    context.pushReplacement(screen: SigninOrSignupScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,39 +62,46 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             Spacer(flex: 3),
+
             FittedBox(
-              child: TextButton(
-                  onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SigninOrSignupScreen(),
-                        ),
-                      ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Skip",
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .color!
-                                  .withOpacity(0.8),
-                            ),
-                      ),
-                      SizedBox(width: kDefaultPadding / 4),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .color!
-                            .withOpacity(0.8),
-                      )
-                    ],
-                  )),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:8.0),
+                child: CircularProgressIndicator(color: Colors.white,),
+              ),
             )
+            // FittedBox(
+            //   child: TextButton(
+            //       onPressed: () => Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //               builder: (context) => SigninOrSignupScreen(),
+            //             ),
+            //           ),
+            //       child: Row(
+            //         children: [
+            //           Text(
+            //             "Skip",
+            //             style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            //                   color: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyText1!
+            //                       .color!
+            //                       .withOpacity(0.8),
+            //                 ),
+            //           ),
+            //           SizedBox(width: kDefaultPadding / 4),
+            //           Icon(
+            //             Icons.arrow_forward_ios,
+            //             size: 16,
+            //             color: Theme.of(context)
+            //                 .textTheme
+            //                 .bodyText1!
+            //                 .color!
+            //                 .withOpacity(0.8),
+            //           )
+            //         ],
+            //       )),
+            // )
           ],
         ),
       ),

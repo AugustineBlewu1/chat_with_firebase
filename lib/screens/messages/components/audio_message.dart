@@ -1,3 +1,4 @@
+import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 

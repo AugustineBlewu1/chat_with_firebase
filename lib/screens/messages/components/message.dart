@@ -1,3 +1,4 @@
+import 'package:chat/models/Chat.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget messageContaint(ChatMessage message) {
-      switch (message.messageType) {
+      switch (message.type) {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.audio:
@@ -43,7 +44,7 @@ class Message extends StatelessWidget {
             SizedBox(width: kDefaultPadding / 2),
           ],
           messageContaint(message),
-          if (message.isSender) MessageStatusDot(status: message.messageStatus)
+          //if (message.isSender) MessageStatusDot(status: message.messageStatus!.status)
         ],
       ),
     );
