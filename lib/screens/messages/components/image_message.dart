@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:chat/models/image_builder.dart';
 import 'package:chat/models/message_wrapper.dart';
+import 'package:chat/widgets/image_viewer.dart';
 import 'package:flutter/material.dart';
-
+import '../../../nav/navigators.dart';
 
 class ImageMessage extends StatelessWidget {
   const ImageMessage({
@@ -15,26 +16,35 @@ class ImageMessage extends StatelessWidget {
   final bool isMe;
   final ChatMessage message;
 
-  bool get _fileExists => message.asset != null
-      ? File(message.asset!).existsSync()
-      : false;
+  bool get _fileExists =>
+      message.asset != null ? File(message.asset!).existsSync() : false;
   @override
   Widget build(BuildContext context) {
-    return  MessageWrapper(
-          message: message,
-          isMe: isMe,
-          child: (isMe && _fileExists)
-              ? ClipRRect(
-                 borderRadius: BorderRadius.circular(10),
+    return MessageWrapper(
+      message: message,
+      isMe: isMe,
+      child: (isMe && _fileExists)
+          ? GestureDetector(
+              onTap: () {
+                context.push(
+                    screen: ImageViewer(
+                  isUrl: false,
+                  isAsset: false,
+                  imageUrl: message.asset,
+                ));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
                 child: Image.file(
-                    File(message.asset!),
-                    width: 200.0,
-                    height: 200.0,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, __, _) => buildCachedNetworkImage(),
-                  ),
-              )
-              : buildCachedNetworkImage(),
+                  File(message.asset!),
+                  width: 200.0,
+                  height: 200.0,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, __, _) => buildCachedNetworkImage(),
+                ),
+              ),
+            )
+          : buildCachedNetworkImage(),
     );
   }
 

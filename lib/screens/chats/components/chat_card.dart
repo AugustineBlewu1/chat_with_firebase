@@ -9,9 +9,9 @@ class ChatCard extends StatelessWidget {
     required this.chat,
     required this.press,
   }) : super(key: key);
-
   final Chat chat;
   final VoidCallback press;
+  
 
   @override
   Widget build(BuildContext context) {

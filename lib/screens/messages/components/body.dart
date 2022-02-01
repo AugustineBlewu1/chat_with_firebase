@@ -2,6 +2,7 @@ import 'package:chat/constants.dart';
 import 'package:chat/constants/firebase_constants.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:chat/nav/navigators.dart';
+import 'package:chat/widgets/bottom_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -23,7 +24,11 @@ class _BodyState extends State<Body> {
       .collection(FirestoreConstants.pathMessageCollection);
 
   final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  List<QueryDocumentSnapshot> chatsmessage = [];
+
   var chatdocumentId;
+  int limit = 20;
+  int limitIn = 20;
   @override
   void initState() {
     chats
@@ -34,10 +39,9 @@ class _BodyState extends State<Body> {
         .then((QuerySnapshot querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
             setState(() {
-               chatdocumentId = querySnapshot.docs.single.id;
-            logger.v(chatdocumentId);
+              chatdocumentId = querySnapshot.docs.single.id;
+              logger.v(chatdocumentId);
             });
-           
           } else {
             chats.add({
               FirestoreConstants.pathUserCollection: {
@@ -54,6 +58,16 @@ class _BodyState extends State<Body> {
         .catchError((err) {});
     super.initState();
   }
+
+  // _scrollListener() {
+  //   if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+  //       !scrollController.position.outOfRange &&
+  //       limit <= chatsmessage.length) {
+  //     setState(() {
+  //       limit += limitIn;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +91,8 @@ class _BodyState extends State<Body> {
                 return Column(
                   children: [
                     Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator()
-                    ),)
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   ],
                 );
               }
@@ -87,27 +100,29 @@ class _BodyState extends State<Body> {
                 return Expanded(
                   child: SafeArea(
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding),
                       child: ListView.builder(
+                          controller: scrollController,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             logger.v(snapshot.data!.docs[index].data()
                                 as Map<String, dynamic>);
+                            chatsmessage = snapshot.data!.docs;
                             var data = (snapshot.data!.docs[index].data()
                                 as Map<String, dynamic>);
-                  
+
                             logger.v("data: $data");
                             //return Expanded(child: SizedBox(),);
                             return Message(
                                 message: ChatMessage(
-                                    createdOn: data['createdOn'],
-                                    isActive: data['isActive'],
-                                    type: chatMessage(data['type']),
-                                    fromID: data['fromID'],
-                                    lastMessage: data['lastMessage'],
-                                    asset: data['asset'],
-                                    ));
+                              createdOn: data['createdOn'],
+                              isActive: data['isActive'],
+                              type: chatMessage(data['type']),
+                              fromID: data['fromID'],
+                              lastMessage: data['lastMessage'],
+                              asset: data['asset'],
+                            ));
                           }),
                     ),
                   ),
@@ -124,13 +139,13 @@ class _BodyState extends State<Body> {
   ChatMessageType? chatMessage(int type) {
     switch (type) {
       case 0:
-      return  ChatMessageType.text;
+        return ChatMessageType.text;
       case 1:
-      return  ChatMessageType.audio;
+        return ChatMessageType.audio;
       case 2:
-      return  ChatMessageType.image;
+        return ChatMessageType.image;
       case 3:
-      return  ChatMessageType.video;
+        return ChatMessageType.video;
 
       default:
     }

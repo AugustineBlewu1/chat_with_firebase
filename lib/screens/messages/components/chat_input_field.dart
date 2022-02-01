@@ -8,7 +8,6 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -101,8 +100,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       IconButton(
                         onPressed: () {
                           showModalBottomSheet(
-                              builder: (context) =>
-                                  bottomSheet(context, picker: _picker, chats : widget.chats, chatID: widget.chatDocID),
+                              builder: (context) => bottomSheet(context,
+                                  picker: _picker,
+                                  chats: widget.chats,
+                                  chatID: widget.chatDocID),
                               context: context);
                         },
                         icon: Icon(Icons.attach_file),
@@ -113,22 +114,15 @@ class _ChatInputFieldState extends State<ChatInputField> {
                             .withOpacity(0.64),
                       ),
                       SizedBox(width: kDefaultPadding / 4),
-                      // Icon(
-                      //   Icons.camera_alt_outlined,
-                      //   color: Theme.of(context)
-                      //       .textTheme
-                      //       .bodyText1!
-                      //       .color!
-                      //       .withOpacity(0.64),
-                      // ),
                       IconButton(
                         icon: Icon(Icons.send),
                         onPressed: () {
-                          sendMessage(
-                            textEditingController.text,
-                            type: ChatMessageType.text,
-                            chatID : widget.chatDocID
-                          );
+                          
+        // scrollController.animateTo(0,
+        //     duration: Duration(milliseconds: 100), curve: Curves.easeIn);
+                          sendMessage(textEditingController.text,
+                              type: ChatMessageType.text,
+                              chatID: widget.chatDocID);
                         },
                         color: Theme.of(context)
                             .textTheme
@@ -180,7 +174,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
   }
 
   void sendMessage(String message,
-      {ChatMessageType type = ChatMessageType.text, String? chatID, String? localAsset}) {
+      {ChatMessageType type = ChatMessageType.text,
+      String? chatID,
+      String? localAsset}) {
     if (message == '') {
       //  nav.to(PageRouter.login);
       return;
@@ -202,6 +198,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
           .add(chat.toMap())
           .then((value) {
         textEditingController.text = '';
+        logger.v("value: $value");
       });
     }
   }

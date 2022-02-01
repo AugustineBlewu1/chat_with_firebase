@@ -34,8 +34,7 @@ class MessagesScreen extends StatelessWidget {
                   data!['nickname'].toString(),
                   style: TextStyle(fontSize: 16),
                 ),
-                Text(
-                  "Active 3m ago",
+                Text('',
                   style: TextStyle(fontSize: 12),
                 )
               ],
