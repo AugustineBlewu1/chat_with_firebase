@@ -101,7 +101,7 @@ class _BodyState extends State<Body> {
                             //return Expanded(child: SizedBox(),);
                             return Message(
                                 message: ChatMessage(
-                                    createdOn: data['createdOn'].toString(),
+                                    createdOn: data['createdOn'],
                                     isActive: data['isActive'],
                                     type: chatMessage(data['type']),
                                     fromID: data['fromID'],

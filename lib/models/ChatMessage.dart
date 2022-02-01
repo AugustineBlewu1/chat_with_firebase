@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chat/screens/messages/components/message.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum ChatMessageType { text, audio, image, video }
 enum MessageStatus { not_sent, not_view, viewed }
@@ -12,7 +13,7 @@ class ChatMessage {
   String? fromID;
   String? to;
   String? asset;
-  String? createdOn;
+  Timestamp? createdOn;
   ChatMessageType? type;
   MessageStatusDot? messageStatus;
   bool? isActive;

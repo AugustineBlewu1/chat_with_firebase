@@ -43,7 +43,7 @@ class StorageService extends ChangeNotifier {
 
     await Future.wait(
         files.map((XFile e) async {
-          if (e is File) {
+          if (e is XFile) {
             String? url = await upLoadFile(id, category, File(e.path));
             if (url != null) {
               uploadUrls.add({"url": url, "localAsset": e.path});

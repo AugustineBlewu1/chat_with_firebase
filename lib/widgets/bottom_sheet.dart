@@ -58,14 +58,17 @@ bottomSheet(context,
                   ),
                   onPressed: () async {
                   await  getData.getImages(picker!, context).then((res) {
+                    for (var item  in res!){
                       chats!
                           .doc(chatID)
                           .collection(FirestoreConstants.pathChatCollection)
-                          .add(res!)
+                          .add(item)
                           .then((value) {
                         logger.v(value);
                         logger.v("Sent Succesfully");
                       });
+                    }
+                      
                     });
                     Navigator.pop(context);
                   }),

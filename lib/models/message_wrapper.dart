@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:chat/models/ChatMessage.dart';
+import 'package:chat/nav/navigators.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageWrapper extends StatelessWidget {
@@ -16,6 +20,10 @@ class MessageWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData _theme = Theme.of(context);
     Size _size = MediaQuery.of(context).size;
+
+    Timestamp timestamp = message.createdOn!;
+
+    logger.v(timestamp);
 
     return InkWell(
       // onLongPress: () {
@@ -55,18 +63,32 @@ class MessageWrapper extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    // message.meta.hasPendingWrites ?
-                    Icons.done,
-                    //  : Icons.done_all,
-                    size: 12,
-                    color: Colors.white54,
+                  Container(
+                    padding: EdgeInsets.all(5.0),
+                    margin: EdgeInsets.only(bottom: 8.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Text(
+                          message.createdOn!.toDate().hour. toString()  +  ' : ' + message.createdOn!.toDate().minute.toString(),
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 3.0,
+                        ),
+                        Icon(
+                          Icons.done_all,
+                          size: 12,
+                          color: Colors.indigo[900],
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(width: 5),
-                  Text(message.createdOn!,
-                    textAlign: TextAlign.left,
-                    style: _theme.textTheme.caption?.copyWith(fontSize: 9),
-                  )
                 ],
               ),
             ),

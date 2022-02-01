@@ -57,28 +57,35 @@ class ChatModel extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>?> getImages(ImagePicker _picker, context) async {
+  Future<List<Map<String, dynamic>>?> getImages(
+      ImagePicker _picker, context) async {
     final storage = Provider.of<StorageService>(context, listen: false);
 
     List<XFile>? images = await _picker.pickMultiImage();
+
+    List<Map<String, dynamic>> imagesData = [];
     logger.v(images);
     if (images == null) {
-      return null;
+      return [];
     } else {
       var urls = await storage.uploadFiles(
           id: firebaseUser!, category: "ChatFiles", files: images);
-logger.v(urls);
+      logger.v(urls);
       if (urls.isNotEmpty) {
-        urls.map((url) {
-          return sendFileMessage(
+        for (var url in urls) {
+          var data = sendFileMessage(
               url['url'], ChatMessageType.image, url['localAsset']);
-        });
+          imagesData.add(data);
+        }
       } else {
-        return null;
+        return [];
       }
+      
+    logger.w(images);
+
+      return imagesData;
     }
 
-    logger.w(images);
   }
 
   Map<String, dynamic> sendFileMessage(
