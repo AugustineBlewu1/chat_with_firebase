@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chat/nav/navigators.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StorageService extends ChangeNotifier {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -33,26 +34,27 @@ class StorageService extends ChangeNotifier {
 
   ///Upload Multiple [List<File>] urls to firebaseStore
 
-  Future<List<String>> uploadFiles({
+  Future<List<Map<String, dynamic>>> uploadFiles({
     required String id,
     required String category,
-    required List<File> files,
+    required List<XFile> files,
   }) async {
-    List<String> uploadUrls = [];
+    List<Map<String, dynamic>> uploadUrls = [];
 
     await Future.wait(
-        files.map((File e) async {
+        files.map((XFile e) async {
           if (e is File) {
-            String? url = await upLoadFile(id, category, e);
+            String? url = await upLoadFile(id, category, File(e.path));
             if (url != null) {
-              uploadUrls.add(url);
+              uploadUrls.add({"url": url, "localAsset": e.path});
             }
           }
         }),
         eagerError: true,
         cleanUp: (_) {
           logger.v('eager Cleaned');
-        });
+        }
+        );
     return uploadUrls;
   }
 
@@ -66,9 +68,7 @@ class StorageService extends ChangeNotifier {
     }
   }
 
-
-
-   /// Deleta a list of urls [List<String>] from  firebase Storage
+  /// Deleta a list of urls [List<String>] from  firebase Storage
   Future deleteList(List<String> urls) {
     return Future.wait(urls.map((String e) {
       return delete(e);

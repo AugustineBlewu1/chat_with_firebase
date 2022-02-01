@@ -4,6 +4,7 @@ import 'package:chat/models/ChatMessage.dart';
 import 'package:chat/nav/navigators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'chat_input_field.dart';
@@ -73,35 +74,42 @@ class _BodyState extends State<Body> {
                 );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Text('Loading'),
+                return Column(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator()
+                    ),)
+                  ],
                 );
               }
               if (snapshot.hasData) {
                 return Expanded(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          logger.v(snapshot.data!.docs[index].data()
-                              as Map<String, dynamic>);
-                          var data = (snapshot.data!.docs[index].data()
-                              as Map<String, dynamic>);
-
-                          logger.v("data: $data");
-                          //return Expanded(child: SizedBox(),);
-                          return Message(
-                              message: ChatMessage(
-                                  createdOn: data['createdOn'].toString(),
-                                  isActive: data['isActive'],
-                                  type: chatMessage(data['type']),
-                                  fromID: data['fromID'],
-                                  lastMessage: data['lastMessage'],
-                                  asset: data['asset'],
-                                  ));
-                        }),
+                  child: SafeArea(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            logger.v(snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>);
+                            var data = (snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>);
+                  
+                            logger.v("data: $data");
+                            //return Expanded(child: SizedBox(),);
+                            return Message(
+                                message: ChatMessage(
+                                    createdOn: data['createdOn'].toString(),
+                                    isActive: data['isActive'],
+                                    type: chatMessage(data['type']),
+                                    fromID: data['fromID'],
+                                    lastMessage: data['lastMessage'],
+                                    asset: data['asset'],
+                                    ));
+                          }),
+                    ),
                   ),
                 );
               }

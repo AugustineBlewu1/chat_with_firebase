@@ -25,7 +25,7 @@ class ImageBuilder extends StatelessWidget {
     logger.v("imageUrl: $imageUrl");
     return (kIsWeb)
         ? ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           child: Image.network(
               imageUrl,
               width: width,
@@ -34,7 +34,7 @@ class ImageBuilder extends StatelessWidget {
             ),
         )
         : ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           child: CachedNetworkImage(
               imageUrl: imageUrl,
               width: width,

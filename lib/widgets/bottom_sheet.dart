@@ -56,8 +56,17 @@ bottomSheet(context,
                     Icons.picture_in_picture_sharp,
                     color: kPrimaryColor,
                   ),
-                  onPressed: () {
-                    getData.getImages(picker!, context);
+                  onPressed: () async {
+                  await  getData.getImages(picker!, context).then((res) {
+                      chats!
+                          .doc(chatID)
+                          .collection(FirestoreConstants.pathChatCollection)
+                          .add(res!)
+                          .then((value) {
+                        logger.v(value);
+                        logger.v("Sent Succesfully");
+                      });
+                    });
                     Navigator.pop(context);
                   }),
               Text(

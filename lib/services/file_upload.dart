@@ -26,7 +26,10 @@ class ChatModel extends ChangeNotifier {
   init() async {
     prefs = await SharedPreferences.getInstance();
     firebaseUser = prefs.getString(FirestoreConstants.id);
-    userChart = firebaseStorage.ref().child(FirestoreConstants.pathUserCollection).child(firebaseUser!);
+    userChart = firebaseStorage
+        .ref()
+        .child(FirestoreConstants.pathUserCollection)
+        .child(firebaseUser!);
     logger.v(userChart);
   }
 
@@ -54,11 +57,26 @@ class ChatModel extends ChangeNotifier {
     }
   }
 
-  Future getImages(ImagePicker _picker, context) async {
-    prefs = await SharedPreferences.getInstance();
+  Future<Map<String, dynamic>?> getImages(ImagePicker _picker, context) async {
     final storage = Provider.of<StorageService>(context, listen: false);
 
     List<XFile>? images = await _picker.pickMultiImage();
+    logger.v(images);
+    if (images == null) {
+      return null;
+    } else {
+      var urls = await storage.uploadFiles(
+          id: firebaseUser!, category: "ChatFiles", files: images);
+logger.v(urls);
+      if (urls.isNotEmpty) {
+        urls.map((url) {
+          return sendFileMessage(
+              url['url'], ChatMessageType.image, url['localAsset']);
+        });
+      } else {
+        return null;
+      }
+    }
 
     logger.w(images);
   }

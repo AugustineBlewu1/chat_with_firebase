@@ -25,7 +25,7 @@ class ImageMessage extends StatelessWidget {
           isMe: isMe,
           child: (isMe && _fileExists)
               ? ClipRRect(
-                 borderRadius: BorderRadius.circular(20),
+                 borderRadius: BorderRadius.circular(10),
                 child: Image.file(
                     File(message.asset!),
                     width: 200.0,
