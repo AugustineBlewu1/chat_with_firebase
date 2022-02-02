@@ -7,7 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'chat_input_field.dart';
 import 'message.dart';
 
@@ -90,9 +91,7 @@ class _BodyState extends State<Body> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(
                   children: [
-                    Expanded(
-                      child: Center(child: CircularProgressIndicator()),
-                    )
+                    Center(child: CircularProgressIndicator()),
                   ],
                 );
               }
@@ -102,28 +101,74 @@ class _BodyState extends State<Body> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
-                      child: ListView.builder(
-                          controller: scrollController,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            logger.v(snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>);
-                            chatsmessage = snapshot.data!.docs;
-                            var data = (snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>);
+                      child: GroupedListView(
+                        elements: snapshot.data!.docs,
+                        groupBy: (QueryDocumentSnapshot element) {
+                          return (((element.data() as Map<String, dynamic>)[
+                                          'createdOn']) ==
+                                      null
+                                  ? Timestamp.now()
+                                  : ((element.data()
+                                          as Map<String, dynamic>)['createdOn'])
+                                      as Timestamp)
+                              .toDate()
+                              .toString()
+                              .substring(0, 10);
+                        },
+                        groupSeparatorBuilder: (groupname) => Center(
+                            child: Container(
+                              margin: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(10.0) ,
+                              decoration: BoxDecoration(
+                                color: Colors.amber[200],
+                                borderRadius: BorderRadius.circular(20.0)
+                              ),
+                              child: Text(DateFormat('EEE').format(
+                                      DateTime.parse(groupname.toString())) +
+                                  ', ' +
+                                  groupname.toString()),
+                            )),
+                        indexedItemBuilder:
+                            (context, QueryDocumentSnapshot item, index) {
+                          logger.v(item.data() as Map<String, dynamic>);
+                          chatsmessage = snapshot.data!.docs;
+                          var data = (item.data() as Map<String, dynamic>);
 
-                            logger.v("data: $data");
-                            //return Expanded(child: SizedBox(),);
-                            return Message(
-                                message: ChatMessage(
-                              createdOn: data['createdOn'],
-                              isActive: data['isActive'],
-                              type: chatMessage(data['type']),
-                              fromID: data['fromID'],
-                              lastMessage: data['lastMessage'],
-                              asset: data['asset'],
-                            ));
-                          }),
+                          logger.v("data: $data");
+                          //return Expanded(child: SizedBox(),);
+                          return Message(
+                              message: ChatMessage(
+                            createdOn: data['createdOn'],
+                            isActive: data['isActive'],
+                            type: chatMessage(data['type']),
+                            fromID: data['fromID'],
+                            lastMessage: data['lastMessage'],
+                            asset: data['asset'],
+                          ));
+                        },
+                      ),
+                      // ListView.builder(
+                      //   controller: scrollController,
+                      //   itemCount: snapshot.data!.docs.length,
+                      //   itemBuilder: (context, index) {
+                      //     logger.v(snapshot.data!.docs[index].data()
+                      //         as Map<String, dynamic>);
+                      //     chatsmessage = snapshot.data!.docs;
+                      //     var data = (snapshot.data!.docs[index].data()
+                      //         as Map<String, dynamic>);
+
+                      //     logger.v("data: $data");
+                      //     //return Expanded(child: SizedBox(),);
+                      //     return Message(
+                      //         message: ChatMessage(
+                      //       createdOn: data['createdOn'],
+                      //       isActive: data['isActive'],
+                      //       type: chatMessage(data['type']),
+                      //       fromID: data['fromID'],
+                      //       lastMessage: data['lastMessage'],
+                      //       asset: data['asset'],
+                      //     ));
+                      //   }),
                     ),
                   ),
                 );

@@ -36,19 +36,26 @@ class Message extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: kDefaultPadding),
-      child: Row(
-        mainAxisAlignment:
-            message.fromID == currentUser!.uid ? MainAxisAlignment.end : MainAxisAlignment.start,
+      child: Column(
+
         children: [
-          if (message.fromID == currentUser!.uid) ...[
-            CircleAvatar(
-              radius: 12,
-              backgroundImage: AssetImage("assets/images/user_2.png"),
-            ),
-            SizedBox(width: kDefaultPadding / 2),
-          ],
-          messageContaint(message),
-          //if (message.isSender) MessageStatusDot(status: message.messageStatus!.status)
+         // if(message.createdOn!.toDate() == D)
+          //Text(message.createdOn!.toDate().toString()),
+          Row(
+            mainAxisAlignment:
+                message.fromID == currentUser!.uid ? MainAxisAlignment.end : MainAxisAlignment.start,
+            children: [
+              if (message.fromID == currentUser!.uid) ...[
+                CircleAvatar(
+                  radius: 12,
+                  backgroundImage: AssetImage("assets/images/user_2.png"),
+                ),
+                SizedBox(width: kDefaultPadding / 2),
+              ],
+              messageContaint(message),
+              //if (message.isSender) MessageStatusDot(status: message.messageStatus!.status)
+            ],
+          ),
         ],
       ),
     );

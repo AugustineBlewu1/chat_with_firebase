@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ImageViewer extends StatelessWidget {
   const ImageViewer({Key? key, this.isUrl, this.isAsset, this.imageUrl})
@@ -21,7 +22,7 @@ class ImageViewer extends StatelessWidget {
         backgroundColor: Colors.black87,
         body:  isUrl == true ? Center(
             child: Hero(
-              tag: 'sdfsfs',
+              tag: 'network_image',
               child: CachedNetworkImage(
                 imageUrl: this.imageUrl!,
                 width: MediaQuery.of(context).size.width,
@@ -30,12 +31,17 @@ class ImageViewer extends StatelessWidget {
             ),
           ) : Center(
             child: Hero(
-              tag: 'sdfdfsf',
-              child: Image.file(
-                          File(imageUrl!),
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                        ),
+              tag: 'file_image',
+              child: SizedBox(
+                
+                              width: MediaQuery.of(context).size.width,
+                child: PhotoView(
+                  imageProvider: FileImage(
+                              File(imageUrl!),
+                            //  fit: BoxFit.cover,
+                            ),
+                ),
+              ),
             ),
           ),
         ),
