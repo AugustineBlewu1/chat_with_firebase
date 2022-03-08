@@ -32,7 +32,7 @@ class Body extends StatelessWidget {
               SizedBox(width: kDefaultPadding),
               FillOutlineButton(
                 press: () {},
-                text: "Active",  
+                text: "Active",
                 isFilled: false,
               ),
             ],
@@ -64,11 +64,10 @@ class Body extends StatelessWidget {
                         logger.v(snapshot.data!.docs[index].data()
                             as Map<String, dynamic>);
                         var data = (snapshot.data!.docs[index].data()
-                                  as Map<String, dynamic>);
+                            as Map<String, dynamic>);
                         return ChatCard(
                           chat: Chat(
-                              name: data['nickname'],
-                               image: data['photoUrl'] ),
+                              name: data['nickname'], image: data['photoUrl']),
                           press: () => Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:chat/constants.dart';
 import 'package:chat/providers/auth_provider.dart';
 import 'package:chat/screens/chats/chats_screen.dart';
 import 'package:chat/screens/signinOrSignUp/signin_or_signup_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import '../../nav/navigators.dart';
@@ -17,6 +18,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Future.delayed(Duration(seconds: 3), () {
       checkedSignedIn();
     });
+
     super.initState();
   }
 
@@ -24,7 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     AuthProvider authProvider = context.read<AuthProvider>();
 
     bool isLoggedIn = await authProvider.isLoggedIn();
-
+    logger.v(isLoggedIn);
     if (isLoggedIn) {
       context.pushReplacement(screen: ChatsScreen());
       return;
@@ -34,6 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //final state = AppLifecycleState.resumed;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -62,11 +65,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
             Spacer(flex: 3),
-
             FittedBox(
               child: Padding(
-                padding: const EdgeInsets.only(bottom:8.0),
-                child: CircularProgressIndicator(color: Colors.white,),
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
               ),
             )
             // FittedBox(

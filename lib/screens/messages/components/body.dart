@@ -2,10 +2,8 @@ import 'package:chat/constants.dart';
 import 'package:chat/constants/firebase_constants.dart';
 import 'package:chat/models/ChatMessage.dart';
 import 'package:chat/nav/navigators.dart';
-import 'package:chat/widgets/bottom_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -102,6 +100,7 @@ class _BodyState extends State<Body> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
                       child: GroupedListView(
+                        // useStickyGroupSeparators: true,
                         elements: snapshot.data!.docs,
                         groupBy: (QueryDocumentSnapshot element) {
                           return (((element.data() as Map<String, dynamic>)[

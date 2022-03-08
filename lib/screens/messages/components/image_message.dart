@@ -62,7 +62,7 @@ class ImageMessage extends StatelessWidget {
           ),
         ),
       ),
-      errorWidget: (context, url, error) => Material(
+    errorWidget: (context, url, error) => Material(
         child: Image.asset(
           'assets/images/user.png',
           width: 200.0,

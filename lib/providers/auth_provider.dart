@@ -37,8 +37,10 @@ class AuthProvider extends ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     bool isLoggedIn = await googleSignIn!.isSignedIn();
+    logger.v(isLoggedIn);
+    logger.w(prefs.getString(FirestoreConstants.id).toString());
 
-    if (isLoggedIn && prefs.getString(FirestoreConstants.id)?.isEmpty == true) {
+    if (isLoggedIn && prefs.getString(FirestoreConstants.id)?.isNotEmpty == true) {
       return true;
     } else {
       return false;

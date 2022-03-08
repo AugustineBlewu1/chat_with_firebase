@@ -15,37 +15,39 @@ class ImageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onDoubleTap: () {
-          Navigator.of(context).pop();
-        },
+        Navigator.of(context).pop();
+      },
       child: Scaffold(
-        appBar: AppBar(title: Text(imageUrl!),),
+        appBar: AppBar(
+          title: Text(imageUrl!),
+        ),
         backgroundColor: Colors.black87,
-        body:  isUrl == true ? Center(
-            child: Hero(
-              tag: 'network_image',
-              child: CachedNetworkImage(
-                imageUrl: this.imageUrl!,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ) : Center(
-            child: Hero(
-              tag: 'file_image',
-              child: SizedBox(
-                
-                              width: MediaQuery.of(context).size.width,
-                child: PhotoView(
-                  imageProvider: FileImage(
-                              File(imageUrl!),
-                            //  fit: BoxFit.cover,
-                            ),
+        body: isUrl == true
+            ? Center(
+                child: Hero(
+                  tag: 'network_image',
+                  child: CachedNetworkImage(
+                    imageUrl: this.imageUrl!,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              )
+            : Center(
+                child: Hero(
+                  tag: 'file_image',
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: PhotoView(
+                      imageProvider: FileImage(
+                        File(imageUrl!),
+                        //  fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      
+      ),
     );
   }
 }
